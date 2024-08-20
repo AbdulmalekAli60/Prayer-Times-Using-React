@@ -11,15 +11,64 @@ import InputLabel from "@mui/material/InputLabel";
 //My Components
 import PrayersCards from "./PrayersCards";
 import usePrayerTime from "../hocks/usePrayerTime";
-
+import { useEffect, useState } from "react";
+import moment from "moment";
+import "moment/locale/ar-sa";
+moment.locale("ar-sa");
 //My Components
+interface City {
+  cityDisplayName: string;
+  cityEnglishName: string;
+}
 
 export default function MainContent() {
-  const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value);
+  const [selectedCity, setSelectedCity] = useState<City>({
+    cityDisplayName: "الرياض",
+    cityEnglishName: "Riyadh",
+  });
+
+  const [timeAndDate, setTimeAndDate] = useState<string>();
+
+  useEffect(() => {
+    const updateTimeAndDate = () => {
+      const today = moment();
+      setTimeAndDate(today.format("MMMM D YYYY | h:mm"));
+    };
+
+    updateTimeAndDate(); // Initial update
+    const timer = setInterval(updateTimeAndDate, 60000);
+
+    return () => clearInterval(timer);
+  }, []);
+  const avilableCities = [
+    {
+      cityDisplayName: "الرياض",
+      cityEnglishName: "Riyadh",
+    },
+    {
+      cityDisplayName: "بريدة",
+      cityEnglishName: "Buraydah",
+    },
+    {
+      cityDisplayName: "جدة",
+      cityEnglishName: "Jeddah",
+    },
+  ];
+
+  const handleCityNameChange = (event: SelectChangeEvent) => {
+    const selectedEnglishName = event.target.value;
+    const selectedCity = avilableCities.find(
+      (city) => city.cityEnglishName === selectedEnglishName
+    );
+    if (selectedCity) {
+      setSelectedCity(selectedCity);
+    }
+    // console.log("the selected city is: ", englishName);
   };
 
-  const { prayerTimings, errorMessage, isLoading } = usePrayerTime();
+  const { prayerTimings, errorMessage, isLoading } = usePrayerTime(
+    selectedCity.cityEnglishName
+  );
   if (isLoading) {
     return <div>Loading</div>;
   } else {
@@ -35,8 +84,8 @@ export default function MainContent() {
       <Grid container>
         <Grid xs={6}>
           <div>
-            <h2>4:20 | 9 2023 سبتمر</h2>
-            <h1>مكة المكرمة</h1>
+            <h2>{timeAndDate}</h2>
+            <h1>{selectedCity.cityDisplayName}</h1>
           </div>
         </Grid>
 
@@ -99,13 +148,18 @@ export default function MainContent() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            // value={age}
-            label="Age"
-            onChange={handleChange}
+            value={selectedCity.cityEnglishName}
+            label="City"
+            onChange={handleCityNameChange}
+            style={{ color: "white" }}
           >
-            <MenuItem value={10}>الرياض</MenuItem>
-            <MenuItem value={20}>بريدة</MenuItem>
-            <MenuItem value={30}>جدة</MenuItem>
+            {avilableCities.map((city) => {
+              return (
+                <MenuItem value={city.cityEnglishName}>
+                  {city.cityDisplayName}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Stack>

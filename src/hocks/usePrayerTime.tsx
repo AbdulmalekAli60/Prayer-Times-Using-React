@@ -17,7 +17,7 @@ interface PrayerTimings {
   Isha: string;
 }
 
-export default function usePrayerTime(): ResponseData {
+export default function usePrayerTime(cityNmae: string): ResponseData {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [prayerTimings, setPrayerTimings] = useState<PrayerTimings>({
     Fajr: "",
@@ -29,13 +29,14 @@ export default function usePrayerTime(): ResponseData {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    // console.log("The city name has been chnaged, this log is from the hock");
     const fetchPrayerTime = async () => {
       const country: string = "SA";
-      const city: string = "buraydah";
+      // const city: string = "buraydah";
 
       try {
         const response = await axios.get(
-          `https://api.aladhan.com/v1/timingsByCity?country=${country}&city=${city}`
+          `https://api.aladhan.com/v1/timingsByCity?country=${country}&city=${cityNmae}`
         );
 
         setPrayerTimings((prev) => ({
@@ -59,7 +60,7 @@ export default function usePrayerTime(): ResponseData {
     };
 
     fetchPrayerTime();
-  }, []);
+  }, [cityNmae]);
 
   return { prayerTimings, errorMessage, isLoading };
 }
