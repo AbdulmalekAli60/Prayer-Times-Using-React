@@ -10,12 +10,25 @@ import InputLabel from "@mui/material/InputLabel";
 
 //My Components
 import PrayersCards from "./PrayersCards";
+import usePrayerTime from "../hocks/usePrayerTime";
+
 //My Components
 
 export default function MainContent() {
   const handleChange = (event: SelectChangeEvent) => {
     console.log(event.target.value);
   };
+
+  const { prayerTimings, errorMessage, isLoading } = usePrayerTime();
+  if (isLoading) {
+    return <div>Loading</div>;
+  } else {
+    // console.log(prayerTimings);
+  }
+
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
+  }
   return (
     <>
       {/* Top */}
@@ -43,34 +56,35 @@ export default function MainContent() {
 
       {/* Cards */}
       <Stack
-        
         direction="row"
         justifyContent={"space-around"}
         style={{ marginTop: "2rem" }}
       >
         <PrayersCards
           prayerNmae="الفجر"
-          time="04:10"
+          time={prayerTimings?.Fajr}
           image="https://wepik.com/api/image/ai/9a07baa7-b49b-4f6b-99fb-2d2b908800c2"
         />
+
         <PrayersCards
           prayerNmae="الظهر"
-          time="12:23"
+          time={prayerTimings?.Dhuhr}
           image="https://wepik.com/api/image/ai/9a07bb45-6a42-4145-b6aa-2470408a2921"
         />
         <PrayersCards
           prayerNmae="العصر"
-          time="03:28"
+          time={prayerTimings?.Asr}
           image="https://wepik.com/api/image/ai/9a07bb90-1edc-410f-a29a-d260a7751acf"
         />
         <PrayersCards
           prayerNmae="المغرب"
-          time="06:54"
+          time={prayerTimings?.Maghrib}
           image="https://wepik.com/api/image/ai/9a07bbe3-4dd1-43b4-942e-1b2597d4e1b5"
         />
+
         <PrayersCards
           prayerNmae="العشاء"
-          time="08:07"
+          time={prayerTimings?.Isha}
           image="https://wepik.com/api/image/ai/9a07bc25-1200-4873-8743-1c370e9eff4d"
         />
       </Stack>
@@ -99,8 +113,3 @@ export default function MainContent() {
     </>
   );
 }
-//fjr https://wepik.com/api/image/ai/9a07baa7-b49b-4f6b-99fb-2d2b908800c2
-// dhr https://wepik.com/api/image/ai/9a07bb45-6a42-4145-b6aa-2470408a2921
-// asr https://wepik.com/api/image/ai/9a07bb90-1edc-410f-a29a-d260a7751acf
-// mgrb https://wepik.com/api/image/ai/9a07bbe3-4dd1-43b4-942e-1b2597d4e1b5
-// isha https://wepik.com/api/image/ai/9a07bc25-1200-4873-8743-1c370e9eff4d

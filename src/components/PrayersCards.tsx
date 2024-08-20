@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 
 interface Prayer {
   prayerNmae: string;
-  time: string;
+  time: string | undefined;
   image: string;
 }
 
@@ -19,7 +19,9 @@ export default function PrayersCards({ prayerNmae, time, image }: Prayer) {
         <CardMedia sx={{ height: 140 }} image={image} />
         <CardContent>
           <h2>{prayerNmae}</h2>
-          <Typography color="text.secondary" variant="h3">{time}</Typography>
+          <Typography color="text.secondary" variant="h3">
+            {time ?? "undefied"}
+          </Typography>
         </CardContent>
       </Card>
     </>
