@@ -18,7 +18,7 @@ export default function PrayersCards({ prayerNmae, time, image }: Prayer) {
       <Card sx={{ width: "15vw" }}>
         <CardMedia sx={{ height: 140 }} image={image} />
         <CardContent>
-          <h2>{prayerNmae}</h2>
+          <h2 className="x">{prayerNmae}</h2>
           <Typography color="text.secondary" variant="h3">
             {time ?? "undefied"}
           </Typography>

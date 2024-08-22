@@ -9,7 +9,7 @@ interface ResponseData {
   isLoading: boolean;
 }
 
-interface PrayerTimings {
+export interface PrayerTimings {
   Fajr: string;
   Dhuhr: string;
   Asr: string;
@@ -51,7 +51,7 @@ export default function usePrayerTime(cityNmae: string): ResponseData {
         if (error instanceof Error) {
           setErrorMessage(error.message);
         } else {
-          setErrorMessage("An unknown error occurred");
+          setErrorMessage("unknown error occurred");
         }
         console.error(error);
       } finally {
